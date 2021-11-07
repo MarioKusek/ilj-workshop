@@ -1,5 +1,13 @@
 plugins {
     id 'java-library'
+    id 'com.github.ben-manes.versions' version '0.39.0'
+    id 'com.adarshr.test-logger' version '3.1.0'
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 repositories {
@@ -7,9 +15,26 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+  // JUnit 5
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+  // parametrized tests
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
+  // Mockito
+  testImplementation 'org.mockito:mockito-core:4.0.0'
+  testImplementation 'org.mockito:mockito-junit-jupiter:4.0.0'
+  // AssertJ
+  testImplementation 'org.assertj:assertj-core:3.21.0'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+testlogger {
+    theme 'standard'
+    showSummary true
+    showPassed true
+    showSkipped true
+    showFailed true
+    logLevel 'lifecycle'
 }
