@@ -2,11 +2,8 @@ package hr.fer.ilj.workshop.files;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.ByteArrayInputStream;
 import java.nio.file.FileSystem;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +27,9 @@ class FileLoaderTest {
 
   @Test
   void loadFileList() throws Exception {
-    Files.createDirectories(root.resolve("dir1"));
-    Files.createFile(root.resolve("file1"));
+    FileHelper.structureBuilder(root)
+      .directory("dir1")
+      .file("file1", 0);
 
     List<FileInfo> files = loader.loadFiles("/");
 
@@ -44,7 +42,9 @@ class FileLoaderTest {
 
   @Test
   void convertingDirectoryToFileInfo() throws Exception {
-    Path dir1 = Files.createDirectories(root.resolve("dir1"));
+    FileHelper.structureBuilder(root)
+      .directory("dir1");
+    Path dir1 = root.resolve("dir1");
 
     FileInfo fileInfo = loader.toFileInfo(dir1);
 
@@ -56,12 +56,10 @@ class FileLoaderTest {
 
   @Test
   void convertingFileToFileInfo() throws Exception {
+    FileHelper.structureBuilder(root)
+      .file("dir1/file1", 5);
 
-    Path dir1 = Files.createDirectories(root.resolve("dir1"));
-    Path file1 = Files.createFile(dir1.resolve("file1"));
-    Files.copy(new ByteArrayInputStream(new byte[] {0, 1, 3, 4, 5}), file1, StandardCopyOption.REPLACE_EXISTING);
-
-    FileInfo fileInfo = loader.toFileInfo(file1);
+    FileInfo fileInfo = loader.toFileInfo(root.resolve("dir1").resolve("file1"));
 
     assertThat(fileInfo.name()).isEqualTo("file1");
     assertThat(fileInfo.path()).hasToString("dir1/file1");
