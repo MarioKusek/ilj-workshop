@@ -1,0 +1,35 @@
+class Client {
+  postavlja upit : Server
+}
+
+class Server {
+  čeka upite
+  upravlja dretvama
+  pročitati zahtjeve iz konekcije
+  prosljeđuje zahtjev : Protocol
+  dohvaća odgovor : Protocol
+  šalje odgovor u konekciju
+}
+
+class Protocol {
+  parsira zahtjev u HTTP-u
+  pita za datoteke : FileLoader
+  generira odgovor u HTTP-u : HtmlGenerator
+}
+
+class HtmlGenerator {
+  prima popis datoteka i generira HTML: FileInfo
+}
+
+class FileLoader {
+  zna put do roota
+  stvara .. ako je potrebno : FileInfo
+  stvara popis datoteka za neki put : FileInfo
+}
+
+class FileInfo {
+  ime datoteke
+  put
+  veličina
+  tip (direktorij ili datoteka)
+}

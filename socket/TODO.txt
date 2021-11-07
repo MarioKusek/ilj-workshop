@@ -10,4 +10,4 @@ The client is a browser -> use of HTML as content and HTTP as a protocol.
 
 TODO
 
-- design classes - CRC diagram
++ design classes - CRC diagram
