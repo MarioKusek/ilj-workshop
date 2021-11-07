@@ -6,7 +6,9 @@ public class Protocol {
     StringBuilder sb = new StringBuilder();
     sb.append("HTTP/1.1 200 OK\r\n");
     sb.append("Content-Type: text/html\r\n");
-    String content = getContent(request);
+
+    String path = parseRequestLine(request);
+    String content = getContent(path);
     sb.append("Content-Length: " + content.length() + "\r\n");
     sb.append("\r\n");
     sb.append(content);
@@ -21,6 +23,10 @@ public class Protocol {
         """;
 
     return String.format(content, body);
+  }
+
+  public static String parseRequestLine(String requestLine) {
+    return requestLine.split(" ")[1];
   }
 
 }
