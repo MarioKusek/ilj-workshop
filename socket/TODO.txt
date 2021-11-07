@@ -1,0 +1,13 @@
+****************
+Napraviti poslužitelj koji vraća popis datoteka u nekom direktoriju. Popis mora imati navigaciju 
+u poddirektorije i povratak natrag (..) do osnovnog direktorija. Klijent je preglednik (browser) 
+-> korištenje HTML-a kao sadržaj i HTTP-a kao protokol.
+
+Create a server that returns a list of files in a directory. The list must have navigation
+to subdirectories and return back (..) to the parent directory (not over root). 
+The client is a browser -> use of HTML as content and HTTP as a protocol.
+****************
+
+TODO
+
+- design classes - CRC diagram
