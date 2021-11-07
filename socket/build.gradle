@@ -13,12 +13,12 @@ repositories {
 }
 
 application {
-  mainClass = 'hr.fer.ilj.workshop.server.Main' // pokrećemo ./gradlew run --args NekiArg
+  	mainClass = 'hr.fer.ilj.workshop.server.Main' // pokrećemo ./gradlew run --args NekiArg
 }
 
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+	implementation(project(':files'))	// dependency to files project
 }
 
 tasks.named('test') {
