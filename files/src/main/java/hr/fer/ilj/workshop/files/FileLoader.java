@@ -5,7 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileLoader {
+  private Logger LOG = LoggerFactory.getLogger(this.getClass());
 
   private Path root;
 
@@ -20,13 +24,17 @@ public class FileLoader {
         .toList();
   }
 
-  // TODO test
   public FileInfo toFileInfo(Path path) {
-    return new FileInfo(path.getFileName().toString(),
-        null, //path.toAbsolutePath().toString().substring(root.toString().length()+1),
-        0, //0,
-        null //? path.toFile().isDirectory() : FileType.DIRECTORY : FileType.FILE
-        );
+    try {
+      return new FileInfo(path.getFileName().toString(),
+          root.relativize(path),
+          Files.size(path),
+          Files.isDirectory(path) ? FileType.DIRECTORY : FileType.FILE
+          );
+    } catch (IOException e) {
+      LOG.error("Can not create FileInfo from Path, returning null", e);
+      return null;
+    }
   }
 
 }
