@@ -14,8 +14,11 @@ public class ConnectionHandler implements Runnable {
 
   private Socket client;
 
-  public ConnectionHandler(Socket client) {
+  private Protocol protocol;
+
+  public ConnectionHandler(Socket client, Protocol protocol) {
     this.client = client;
+    this.protocol = protocol;
   }
 
   @Override
@@ -25,7 +28,6 @@ public class ConnectionHandler implements Runnable {
 
 
       String requestline = in.readLine();
-      Protocol protocol = new Protocol();
       String response = protocol.handleRequest(requestline);
       out.println(response);
     } catch (IOException ioe) {

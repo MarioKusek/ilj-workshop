@@ -1,6 +1,13 @@
 package hr.fer.ilj.workshop.server;
 
+import hr.fer.ilj.workshop.files.FileLoader;
+
 public class Protocol {
+  private FileLoader loader;
+
+  public Protocol(FileLoader loader) {
+    this.loader = loader;
+  }
 
   public String handleRequest(String request) {
     StringBuilder sb = new StringBuilder();
