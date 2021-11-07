@@ -11,7 +11,7 @@ The client is a browser -> use of HTML as content and HTTP as a protocol.
 TODO
 
 + design classes - CRC diagram
-- server returns HTML with something (creating Server, Protocol which returns HTML) - no TDD
++ server returns HTML with something (creating Server, Protocol which returns HTML) - no TDD
 - server returns simple HTML which has path asked in the HTTP request - from now on use TDD
 - returns list of files which are inside of some directory
 - returns list of files with links form some directory
