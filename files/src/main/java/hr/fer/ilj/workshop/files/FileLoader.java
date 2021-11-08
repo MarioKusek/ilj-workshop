@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +18,22 @@ public class FileLoader {
     this.root = root.toAbsolutePath();
   }
 
+  /**
+   * Load file infos of path.
+   *
+   * @param path absolute path which is translated to be relative to root
+   * @return list of file infos
+   * @throws IOException
+   */
   public List<FileInfo> loadFiles(String path) throws IOException {
     Path dir = root.resolve(path.substring(1));
-    return Files.list(dir)
-        .map(this::toFileInfo)
-        .toList();
+    Stream<FileInfo> fileStream = Files.list(dir)
+        .map(this::toFileInfo);
+
+    if(path.equals("/"))
+      return fileStream.toList();
+    else
+      return Stream.concat(Stream.of(new FileInfo("..", dir.getParent(), 0, FileType.DIRECTORY)), fileStream).toList();
   }
 
   public FileInfo toFileInfo(Path path) {

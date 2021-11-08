@@ -41,6 +41,36 @@ class FileLoaderTest {
   }
 
   @Test
+  void loadRootFileList_shouldNotContainParentDir() throws Exception {
+    FileHelper.structureBuilder(root)
+      .directory("dir1")
+      .file("file1", 0);
+
+    List<FileInfo> files = loader.loadFiles("/");
+
+    String directoryRepresentation = files.stream()
+        .map(fi -> fi.name())
+        .sorted()
+        .collect(Collectors.joining(" "));
+    assertThat(directoryRepresentation).doesNotContain("..");
+  }
+
+  @Test
+  void loadSubdirectoryFileList_shouldContainParentDir() throws Exception {
+    FileHelper.structureBuilder(root)
+      .file("dir1/file1", 0)
+      .file("dir1/file1", 0);
+
+    List<FileInfo> files = loader.loadFiles("/dir1");
+
+    String directoryRepresentation = files.stream()
+        .map(fi -> fi.name())
+        .sorted()
+        .collect(Collectors.joining(" "));
+    assertThat(directoryRepresentation).contains("..");
+  }
+
+  @Test
   void convertingDirectoryToFileInfo() throws Exception {
     FileHelper.structureBuilder(root)
       .directory("dir1");
