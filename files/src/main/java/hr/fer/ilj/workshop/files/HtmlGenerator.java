@@ -42,7 +42,9 @@ public class HtmlGenerator {
   }
 
   private String calculateSizeInUnits(FileInfo fileInfo) {
-    if(sizeInKBs(fileInfo) != 0)
+    if(sizeInMBs(fileInfo) != 0)
+      return sizeInMBs(fileInfo) + " MB";
+    else if(sizeInKBs(fileInfo) != 0)
       return sizeInKBs(fileInfo) + " KB";
     else
       return fileInfo.size() + " B";
@@ -50,6 +52,10 @@ public class HtmlGenerator {
 
   private long sizeInKBs(FileInfo fileInfo) {
     return fileInfo.size() / 1024;
+  }
+
+  private long sizeInMBs(FileInfo fileInfo) {
+    return fileInfo.size() / 1024 / 1024;
   }
 
 }

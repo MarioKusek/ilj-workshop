@@ -93,7 +93,10 @@ class HtmlGeneratorTest {
         new ItemSize(1024, "1 KB"),
         new ItemSize(2047, "1 KB"),
         new ItemSize(2048, "2 KB"),
-        new ItemSize(1024 * 1024 - 1, "1023 KB")
+        new ItemSize(1024 * 1024 - 1, "1023 KB"),
+        new ItemSize(1024 * 1024, "1 MB"),
+        new ItemSize(2 * 1024 * 1024 -1, "1 MB"),
+        new ItemSize(2 * 1024 * 1024, "2 MB")
         );
   }
 
