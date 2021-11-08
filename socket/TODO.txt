@@ -17,7 +17,7 @@ TODO
 + returns list of files with links form some directory
 - if requested directory is not root then there should be .. with link to parent directory
 + in the list are files with size in bytes
-- in the list are files in normal sizes B, KB or MB
++ in the list are files in normal sizes B, KB or MB
 
 - if path to file is requested returns 404 Not Found 
 - if path contains .. returns 400 Bat Request 
