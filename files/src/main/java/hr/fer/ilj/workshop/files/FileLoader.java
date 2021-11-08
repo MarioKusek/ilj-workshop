@@ -33,7 +33,7 @@ public class FileLoader {
     if(path.equals("/"))
       return fileStream.toList();
     else
-      return Stream.concat(Stream.of(new FileInfo("..", dir.getParent(), 0, FileType.DIRECTORY)), fileStream).toList();
+      return Stream.concat(Stream.of(new FileInfo("..", root.relativize(dir.getParent()), 0, FileType.DIRECTORY)), fileStream).toList();
   }
 
   public FileInfo toFileInfo(Path path) {

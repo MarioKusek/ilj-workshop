@@ -35,6 +35,7 @@ class FileLoaderTest {
     List<FileInfo> files = loader.loadFiles("/");
 
     assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).isEqualTo("dir1 file1");
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.path().toString())).isEqualTo("dir1 file1");
   }
 
   @Test
@@ -52,11 +53,24 @@ class FileLoaderTest {
   void loadSubdirectoryFileList_shouldContainParentDir() throws Exception {
     FileHelper.structureBuilder(root)
       .file("dir1/file1", 0)
-      .file("dir1/file1", 0);
+      .directory("dir1/dir2");
 
     List<FileInfo> files = loader.loadFiles("/dir1");
 
     assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).contains("..");
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.path().toString())).isEqualTo(" dir1/dir2 dir1/file1");
+  }
+
+  @Test
+  void loadEmptyDirectory() throws Exception {
+    FileHelper.structureBuilder(root)
+      .directory("dir1/dir2");
+
+    List<FileInfo> files = loader.loadFiles("/dir1/dir2");
+
+    assertThat(files).hasSize(1);
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).contains("..");
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.path().toString())).isEqualTo("dir1");
   }
 
   private String extractDirectoryRepresentation(List<FileInfo> files,
