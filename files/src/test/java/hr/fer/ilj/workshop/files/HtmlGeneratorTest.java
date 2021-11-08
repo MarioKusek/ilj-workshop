@@ -13,9 +13,9 @@ class HtmlGeneratorTest {
   void generateHtmlForEmptyList() {
     HtmlGenerator generator = new HtmlGenerator();
     assertThat(generator.generate(List.of())).isEqualTo("""
-            <p>File list:</p>
-            <p>empty</p>
-            """);
+        <p>File list:</p>
+        <p>empty</p>
+        """);
   }
 
   @Test
@@ -29,11 +29,11 @@ class HtmlGeneratorTest {
     List<FileInfo> list = List.of(new FileInfo("ime", Path.of("dir/ime"), 0, FileType.FILE));
 
     assertThat(generator.generate(list)).isEqualTo("""
-            <p>File list:</p>
-            <ul>
-              <li>ime</li>
-            </ul>
-            """);
+        <p>File list:</p>
+        <ul>
+          <li>ime</li>
+        </ul>
+        """);
   }
 
   @Test
@@ -47,8 +47,7 @@ class HtmlGeneratorTest {
     List<FileInfo> list = List.of(
         new FileInfo("ime1", Path.of("dir/ime1"), 0, FileType.FILE),
         new FileInfo("ime2", Path.of("dir/ime2"), 0, FileType.FILE),
-        new FileInfo("ime3", Path.of("dir/ime3"), 0, FileType.FILE)
-    );
+        new FileInfo("ime3", Path.of("dir/ime3"), 0, FileType.FILE));
 
     assertThat(generator.generate(list)).isEqualTo("""
         <p>File list:</p>
