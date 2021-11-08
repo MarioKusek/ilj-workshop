@@ -59,4 +59,15 @@ class HtmlGeneratorTest {
         """);
   }
 
+  @Test
+  void generateHtmlForItem_file() throws Exception {
+    HtmlGenerator generator = new HtmlGenerator();
+
+    FileInfo fileInfo = new FileInfo("ime1", Path.of("dir/ime1"), 345, FileType.FILE);
+
+    assertThat(generator.toHtml(fileInfo)).isEqualTo("""
+            ime1 - 345B\
+            """);
+  }
+
 }

@@ -21,7 +21,14 @@ public class HtmlGenerator {
   }
 
   public String toHtml(FileInfo fileInfo) {
-    return fileInfo.name();
+    StringBuilder result = new StringBuilder();
+
+    result.append(fileInfo.name());
+    result.append(" - ");
+    result.append(fileInfo.size());
+    result.append("B");
+
+    return result.toString();
   }
 
 }
