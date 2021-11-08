@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hr.fer.ilj.workshop.files.FileLoader;
+import hr.fer.ilj.workshop.files.HtmlGenerator;
 
 public class Server {
   private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -21,7 +22,8 @@ public class Server {
 
   public void start(String rootPath) {
     FileLoader loader = new FileLoader(Path.of(rootPath));
-    Protocol protocol = new Protocol(loader );
+    HtmlGenerator generator = new HtmlGenerator();
+    Protocol protocol = new Protocol(loader, generator );
 
     try (ServerSocket ssc = new ServerSocket(LISTEN_PORT);) {
       ExecutorService pool = Executors.newFixedThreadPool(MAX_PARALLEL_CLIENT);

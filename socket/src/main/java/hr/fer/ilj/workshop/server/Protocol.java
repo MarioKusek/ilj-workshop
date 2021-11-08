@@ -6,14 +6,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hr.fer.ilj.workshop.files.FileLoader;
+import hr.fer.ilj.workshop.files.HtmlGenerator;
 
 public class Protocol {
   private Logger LOG = LoggerFactory.getLogger(this.getClass());
 
   private FileLoader loader;
+  private HtmlGenerator generator;
 
-  public Protocol(FileLoader loader) {
+  public Protocol(FileLoader loader, HtmlGenerator generator) {
     this.loader = loader;
+    this.generator = generator;
   }
 
   public String handleRequest(String request) {
@@ -21,10 +24,7 @@ public class Protocol {
     String path = parseRequestLine(request);
     String content;
     try {
-      content = getContent(loader.loadFiles(path).stream()
-          .map(fi -> fi.name())
-          .toList().toString()
-          );
+      content = getContent(generator.generate(loader.loadFiles(path)));
 
       sb.append("HTTP/1.1 200 OK\r\n");
       sb.append("Content-Type: text/html\r\n");
