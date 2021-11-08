@@ -66,7 +66,7 @@ class HtmlGeneratorTest {
     FileInfo fileInfo = new FileInfo("ime1", Path.of("dir/ime1"), 345, FileType.FILE);
 
     assertThat(generator.toHtml(fileInfo)).isEqualTo("""
-            ime1 - 345B\
+            ime1 - 345 B\
             """);
   }
 
@@ -81,4 +81,22 @@ class HtmlGeneratorTest {
         """);
   }
 
+  @Test
+  void generateSizeOfItemInBytes_0() throws Exception {
+    HtmlGenerator generator = new HtmlGenerator();
+
+    FileInfo fileInfo = new FileInfo("not important name", null, 0, FileType.FILE);
+
+    assertThat(generator.toHtml(fileInfo)).endsWith("0 B");
+  }
+
+  @Test
+  void generateSizeOfItemInBytes_lessThen1024() throws Exception {
+    HtmlGenerator generator = new HtmlGenerator();
+
+    FileInfo fileInfo = new FileInfo("not important name", Path.of("dir/ime1"), 1023, FileType.FILE);
+
+    assertThat(generator.toHtml(fileInfo)).endsWith("1023 B");
+  }
 }
+
