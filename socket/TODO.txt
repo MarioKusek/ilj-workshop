@@ -19,7 +19,7 @@ TODO
 + in the list are files with size in bytes
 + in the list are files in normal sizes B, KB or MB
 
-- if path to file is requested returns 404 Not Found 
++ if path to file is requested returns 404 Not Found 
 - if path contains .. returns 400 Bat Request 
 - path with spaces
 + BUG requesting directory generates wrong link
