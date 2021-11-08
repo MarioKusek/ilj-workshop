@@ -38,10 +38,14 @@ public class HtmlGenerator {
   }
 
   private String fileToHtml(FileInfo fileInfo) {
-    if((fileInfo.size() / 1024) != 0)
-      return String.format("%s - %s", fileInfo.name(), fileInfo.size() / 1024 + " KB");
+    if(sizeInKBs(fileInfo) != 0)
+      return String.format("%s - %s", fileInfo.name(), sizeInKBs(fileInfo) + " KB");
     else
       return String.format("%s - %s", fileInfo.name(), fileInfo.size() + " B");
+  }
+
+  private long sizeInKBs(FileInfo fileInfo) {
+    return fileInfo.size() / 1024;
   }
 
 }
