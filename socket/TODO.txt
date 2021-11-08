@@ -14,7 +14,12 @@ TODO
 + server returns HTML with something (creating Server, Protocol which returns HTML) - no TDD
 + server returns simple HTML which has path asked in the HTTP request - from now on use TDD
 + returns list of files which are inside of some directory
-- returns list of files with links form some directory
++ returns list of files with links form some directory
 - if requested directory is not root then there should be .. with link to parent directory
-- in the list are files with size in bytes
++ in the list are files with size in bytes
 - in the list are files in normal sizes B, KB or MB
+
+- if path to file is requested returns 404 Not Found 
+- if path contains .. returns 400 Bat Request 
+- BUG requesting directory generates wrong link
+	- requesting http://localhost:4444/src/test/java generates link to resources that has duplicate part of path e.g. http://localhost:4444/src/test/src/test/java/hr
