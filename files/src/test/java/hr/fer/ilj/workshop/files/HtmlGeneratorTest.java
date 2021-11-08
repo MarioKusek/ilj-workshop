@@ -94,9 +94,18 @@ class HtmlGeneratorTest {
   void generateSizeOfItemInBytes_lessThen1024() throws Exception {
     HtmlGenerator generator = new HtmlGenerator();
 
-    FileInfo fileInfo = new FileInfo("not important name", Path.of("dir/ime1"), 1023, FileType.FILE);
+    FileInfo fileInfo = new FileInfo("not important name", null, 1023, FileType.FILE);
 
     assertThat(generator.toHtml(fileInfo)).endsWith("1023 B");
+  }
+
+  @Test
+  void generateSizeOfItemInKiloBytes_1024() throws Exception {
+    HtmlGenerator generator = new HtmlGenerator();
+
+    FileInfo fileInfo = new FileInfo("not important name", null, 1024, FileType.FILE);
+
+    assertThat(generator.toHtml(fileInfo)).endsWith("1 KB");
   }
 }
 
