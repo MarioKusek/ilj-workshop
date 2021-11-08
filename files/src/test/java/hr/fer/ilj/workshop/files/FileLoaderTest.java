@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,11 +34,7 @@ class FileLoaderTest {
 
     List<FileInfo> files = loader.loadFiles("/");
 
-    String directoryRepresentation = files.stream()
-        .map(fi -> fi.name())
-        .sorted()
-        .collect(Collectors.joining(" "));
-    assertThat(directoryRepresentation).isEqualTo("dir1 file1");
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).isEqualTo("dir1 file1");
   }
 
   @Test
@@ -48,11 +45,7 @@ class FileLoaderTest {
 
     List<FileInfo> files = loader.loadFiles("/");
 
-    String directoryRepresentation = files.stream()
-        .map(fi -> fi.name())
-        .sorted()
-        .collect(Collectors.joining(" "));
-    assertThat(directoryRepresentation).doesNotContain("..");
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).doesNotContain("..");
   }
 
   @Test
@@ -63,11 +56,16 @@ class FileLoaderTest {
 
     List<FileInfo> files = loader.loadFiles("/dir1");
 
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).contains("..");
+  }
+
+  private String extractDirectoryRepresentation(List<FileInfo> files,
+      Function<? super FileInfo, ? extends String> mapper) {
     String directoryRepresentation = files.stream()
-        .map(fi -> fi.name())
+        .map(mapper)
         .sorted()
         .collect(Collectors.joining(" "));
-    assertThat(directoryRepresentation).contains("..");
+    return directoryRepresentation;
   }
 
   @Test
