@@ -23,12 +23,22 @@ public class HtmlGenerator {
   public String toHtml(FileInfo fileInfo) {
     StringBuilder result = new StringBuilder();
 
-    result.append(fileInfo.name());
-    result.append(" - ");
-    result.append(fileInfo.size());
-    result.append("B");
+    if(fileInfo.type() == FileType.FILE)
+      result.append(fileToHtml(fileInfo));
+    else
+      result.append(dirToHtml(fileInfo));
 
     return result.toString();
+  }
+
+  private String dirToHtml(FileInfo fileInfo) {
+    return String.format("""
+            <a href="%s">%s</a>\
+            """, fileInfo.path().toString(), fileInfo.name());
+  }
+
+  private String fileToHtml(FileInfo fileInfo) {
+    return String.format("%s - %s", fileInfo.name(), fileInfo.size() + "B");
   }
 
 }

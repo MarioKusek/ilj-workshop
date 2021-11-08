@@ -70,4 +70,15 @@ class HtmlGeneratorTest {
             """);
   }
 
+  @Test
+  void generateHtmlForItem_dir() throws Exception {
+    HtmlGenerator generator = new HtmlGenerator();
+
+    FileInfo fileInfo = new FileInfo("subdir1", Path.of("dir/subdir1"), 0, FileType.DIRECTORY);
+
+    assertThat(generator.toHtml(fileInfo)).isEqualTo("""
+        <a href="dir/subdir1">subdir1</a>\
+        """);
+  }
+
 }
