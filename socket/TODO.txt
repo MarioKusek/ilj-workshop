@@ -20,7 +20,7 @@ TODO
 + in the list are files in normal sizes B, KB or MB
 
 + if path to file is requested returns 404 Not Found 
-- if path contains .. returns 400 Bat Request 
++ if path contains .. returns 400 Bad Request 
 - path with spaces
 + BUG requesting directory generates wrong link
 	- requesting http://localhost:4444/src/test/java generates link to resources that has duplicate part of path e.g. http://localhost:4444/src/test/src/test/java/hr

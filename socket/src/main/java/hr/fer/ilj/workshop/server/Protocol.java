@@ -1,6 +1,7 @@
 package hr.fer.ilj.workshop.server;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.NotDirectoryException;
 
 import org.slf4j.Logger;
@@ -34,6 +35,11 @@ public class Protocol {
       sb.append("HTTP/1.1 404 File Not Found\r\n");
       sb.append("Content-Type: text/html\r\n");
       content = "Can not load file as directory";
+    } catch (AccessDeniedException e) {
+      LOG.info("Can not load path", e);
+      sb.append("HTTP/1.1 400 Bad Request\r\n");
+      sb.append("Content-Type: text/html\r\n");
+      content = "Can not load path";
     } catch (IOException e) {
       LOG.info("Can not load directory", e);
       sb.append("HTTP/1.1 500 Internal Server Error\r\n");

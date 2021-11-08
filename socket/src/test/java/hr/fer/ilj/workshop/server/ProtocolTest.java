@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.NotDirectoryException;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +35,26 @@ class ProtocolTest {
     String response = protocol.handleRequest("GET /file HTTP/1.1");
 
     assertThat(response).startsWith("HTTP/1.1 404 File Not Found\r\n");
+  }
+
+  @Test
+  void loadingRootParentDirectory() throws Exception {
+    FileLoader loader = new FileLoader(Path.of("."));
+    Protocol protocol = new Protocol(loader, null);
+
+    String response = protocol.handleRequest("GET /.. HTTP/1.1");
+
+    assertThat(response).startsWith("HTTP/1.1 400 Bad Request\r\n");
+  }
+
+  @Test
+  void loadingSomeParentDirectory() throws Exception {
+    FileLoader loader = new FileLoader(Path.of("."));
+    Protocol protocol = new Protocol(loader, null);
+
+    String response = protocol.handleRequest("GET /d/../dd HTTP/1.1");
+
+    assertThat(response).startsWith("HTTP/1.1 400 Bad Request\r\n");
   }
 
 }

@@ -1,7 +1,9 @@
 package hr.fer.ilj.workshop.files;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.nio.file.AccessDeniedException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.List;
@@ -71,6 +73,14 @@ class FileLoaderTest {
     assertThat(files).hasSize(1);
     assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).contains("..");
     assertThat(extractDirectoryRepresentation(files, fi -> fi.path().toString())).isEqualTo("dir1");
+  }
+
+  @Test
+  void loadRootParent() throws Exception {
+    assertThrows(AccessDeniedException.class, () -> {
+      loader.loadFiles("/..");
+    });
+
   }
 
   private String extractDirectoryRepresentation(List<FileInfo> files,

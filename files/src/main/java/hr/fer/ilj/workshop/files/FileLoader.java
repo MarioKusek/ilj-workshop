@@ -1,6 +1,7 @@
 package hr.fer.ilj.workshop.files;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -26,6 +27,8 @@ public class FileLoader {
    * @throws IOException
    */
   public List<FileInfo> loadFiles(String path) throws IOException {
+    if(path.contains(".."))
+      throw new AccessDeniedException("path");
     Path dir = root.resolve(path.substring(1));
     Stream<FileInfo> fileStream = Files.list(dir)
         .map(this::toFileInfo);
