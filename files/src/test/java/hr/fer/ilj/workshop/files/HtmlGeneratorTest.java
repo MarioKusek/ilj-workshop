@@ -4,8 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class HtmlGeneratorTest {
 
@@ -81,31 +84,28 @@ class HtmlGeneratorTest {
         """);
   }
 
-  @Test
-  void generateSizeOfItemInBytes_0() throws Exception {
-    HtmlGenerator generator = new HtmlGenerator();
+  private record ItemSize(long size, String representation) {}
 
-    FileInfo fileInfo = new FileInfo("not important name", null, 0, FileType.FILE);
-
-    assertThat(generator.toHtml(fileInfo)).endsWith("0 B");
+  static Stream<ItemSize> sizeProvider() {
+    return Stream.of(
+        new ItemSize(0, "0 B"),
+        new ItemSize(1023, "1023 B"),
+        new ItemSize(1024, "1 KB"),
+        new ItemSize(2047, "1 KB"),
+        new ItemSize(2048, "2 KB"),
+        new ItemSize(1024 * 1024 - 1, "1023 KB")
+        );
   }
 
-  @Test
-  void generateSizeOfItemInBytes_lessThen1024() throws Exception {
+  @ParameterizedTest
+  @MethodSource("sizeProvider")
+  void generateSizeOfItem(ItemSize itemSize) {
     HtmlGenerator generator = new HtmlGenerator();
 
-    FileInfo fileInfo = new FileInfo("not important name", null, 1023, FileType.FILE);
+    FileInfo fileInfo = new FileInfo("not important name", null, itemSize.size(), FileType.FILE);
 
-    assertThat(generator.toHtml(fileInfo)).endsWith("1023 B");
-  }
+    assertThat(generator.toHtml(fileInfo)).endsWith(itemSize.representation());
 
-  @Test
-  void generateSizeOfItemInKiloBytes_1024() throws Exception {
-    HtmlGenerator generator = new HtmlGenerator();
-
-    FileInfo fileInfo = new FileInfo("not important name", null, 1024, FileType.FILE);
-
-    assertThat(generator.toHtml(fileInfo)).endsWith("1 KB");
   }
 }
 
