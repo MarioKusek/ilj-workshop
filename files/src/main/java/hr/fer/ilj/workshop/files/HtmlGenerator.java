@@ -33,7 +33,7 @@ public class HtmlGenerator {
 
   private String dirToHtml(FileInfo fileInfo) {
     return String.format("""
-            <a href="%s">%s</a>\
+            <a href="/%s">%s</a>\
             """, fileInfo.path().toString(), fileInfo.name());
   }
 
