@@ -1,6 +1,8 @@
 package hr.fer.ilj.workshop.server;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.NotDirectoryException;
 
@@ -23,7 +25,7 @@ public class Protocol {
 
   public String handleRequest(String request) {
     StringBuilder sb = new StringBuilder();
-    String path = parseRequestLine(request);
+    String path = URLDecoder.decode(parseRequestLine(request), StandardCharsets.UTF_8);
     String content;
     try {
       content = getContent(generator.generate(loader.loadFiles(path)));

@@ -1,6 +1,11 @@
 package hr.fer.ilj.workshop.files;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class HtmlGenerator {
 
@@ -34,7 +39,14 @@ public class HtmlGenerator {
   private String dirToHtml(FileInfo fileInfo) {
     return String.format("""
             <a href="/%s">%s</a>\
-            """, fileInfo.path().toString(), fileInfo.name());
+            """, encodePath(fileInfo.path()), fileInfo.name());
+  }
+
+  private String encodePath(Path path) {
+    //URLEncoder.encode(fileInfo.path().toString(), StandardCharsets.UTF_8)
+    return StreamSupport.stream(path.spliterator(), false)
+      .map(p -> URLEncoder.encode(p.toString(), StandardCharsets.UTF_8))
+      .collect(Collectors.joining("/"));
   }
 
   private String fileToHtml(FileInfo fileInfo) {

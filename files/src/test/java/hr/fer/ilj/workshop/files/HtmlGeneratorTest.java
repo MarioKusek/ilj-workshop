@@ -84,6 +84,17 @@ class HtmlGeneratorTest {
         """);
   }
 
+  @Test
+  void generateHtmlForItemThatHasSpacesInNameAndPath_dir() throws Exception {
+    HtmlGenerator generator = new HtmlGenerator();
+
+    FileInfo fileInfo = new FileInfo("subdir 1", Path.of("dir 1/subdir 1"), 0, FileType.DIRECTORY);
+
+    assertThat(generator.toHtml(fileInfo)).isEqualTo("""
+        <a href="/dir+1/subdir+1">subdir 1</a>\
+        """);
+  }
+
   private record ItemSize(long size, String representation) {}
 
   static Stream<ItemSize> sizeProvider() {

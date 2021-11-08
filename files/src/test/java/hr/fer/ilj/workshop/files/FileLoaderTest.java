@@ -41,6 +41,18 @@ class FileLoaderTest {
   }
 
   @Test
+  void loadFilesWithSpaces() throws Exception {
+    FileHelper.structureBuilder(root)
+    .directory("dir 1")
+    .file("file 1", 0);
+
+    List<FileInfo> files = loader.loadFiles("/");
+
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.name())).isEqualTo("dir 1 file 1");
+    assertThat(extractDirectoryRepresentation(files, fi -> fi.path().toString())).isEqualTo("dir 1 file 1");
+  }
+
+  @Test
   void loadRootFileList_shouldNotContainParentDir() throws Exception {
     FileHelper.structureBuilder(root)
       .directory("dir1")
