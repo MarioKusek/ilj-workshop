@@ -56,4 +56,32 @@ class FilesControllerTest {
               """));
   }
 
+  @Test
+  void directoryWithFileAndDirectory() throws Exception {
+    given(loader.loadFiles("/d1/d2"))
+      .willReturn(List.of(
+        new FileInfo("f1", Path.of("/d1/d2/f1"), 134, FileType.FILE),
+        new FileInfo("d3", Path.of("/d1/d2/d3"), 0, FileType.DIRECTORY)
+      ));
+
+    mvc.perform(get("/d1/d2").accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content().json("""
+              [
+                {
+                  "name": "f1",
+                  "path": "/d1/d2/f1",
+                  "size": 134,
+                  "type": "FILE"
+                },
+                {
+                  "name": "d3",
+                  "path": "/d1/d2/d3",
+                  "size": 0,
+                  "type": "DIRECTORY"
+                }
+              ]
+              """));
+  }
+
 }
