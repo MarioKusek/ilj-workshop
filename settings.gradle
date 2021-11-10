@@ -2,3 +2,4 @@ rootProject.name = 'ilj-workshop'
 
 include('files')
 include('socket')
+include('rest')
