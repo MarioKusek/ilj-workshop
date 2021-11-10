@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import hr.fer.ilj.workshop.files.FileInfo;
 import hr.fer.ilj.workshop.files.FileLoader;
+import hr.fer.ilj.workshop.files.FileType;
 
 @WebMvcTest(FilesController.class)
 class FilesControllerTest {
@@ -32,6 +35,25 @@ class FilesControllerTest {
     mvc.perform(get("/d1/d2").accept(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
       .andExpect(content().string("[]"));
+  }
+
+  @Test
+  void directoryWithOneFile() throws Exception {
+    given(loader.loadFiles("/d1/d2"))
+      .willReturn(List.of(new FileInfo("f1", Path.of("/d1/d2/f1"), 134, FileType.FILE)));
+
+    mvc.perform(get("/d1/d2").accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content().json("""
+              [
+                {
+                  "name": "f1",
+                  "path": "/d1/d2/f1",
+                  "size": 134,
+                  "type": "FILE"
+                }
+              ]
+              """));
   }
 
 }
