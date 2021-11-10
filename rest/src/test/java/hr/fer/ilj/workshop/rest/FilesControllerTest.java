@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -82,6 +83,15 @@ class FilesControllerTest {
                 }
               ]
               """));
+  }
+
+  @Test
+  void requestedFile_should_return404() throws Exception {
+    given(loader.loadFiles("/someFile"))
+      .willThrow(new NotDirectoryException("/someFile"));
+
+    mvc.perform(get("/someFile").accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isNotFound());
   }
 
 }
