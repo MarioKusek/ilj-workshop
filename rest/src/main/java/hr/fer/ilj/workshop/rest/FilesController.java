@@ -1,6 +1,7 @@
 package hr.fer.ilj.workshop.rest;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.NotDirectoryException;
 import java.util.Collection;
 
@@ -36,6 +37,9 @@ public class FilesController {
     } catch (NotDirectoryException e) {
       LOG.info("Requested {} is not directory", e.getFile());
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getFile() + " is not directory");
+    } catch (AccessDeniedException e) {
+      LOG.info("Requested {} is not existing directory", e.getFile());
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not load path " + e.getFile());
     } catch (IOException e) {
       LOG.error("Can not read directory " + request.getPathInfo(), e);
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

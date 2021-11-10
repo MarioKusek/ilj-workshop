@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.file.AccessDeniedException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.util.List;
@@ -92,6 +93,15 @@ class FilesControllerTest {
 
     mvc.perform(get("/someFile").accept(MediaType.APPLICATION_JSON))
       .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void notExistingDirectory_should_return400() throws Exception {
+    given(loader.loadFiles("/someNotExistingDirectory"))
+      .willThrow(new AccessDeniedException("/someNotExistingDirectory"));
+
+    mvc.perform(get("/someNotExistingDirectory").accept(MediaType.APPLICATION_JSON))
+    .andExpect(status().isBadRequest());
   }
 
 }
